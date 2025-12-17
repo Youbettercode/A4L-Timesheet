@@ -255,3 +255,25 @@ def admin_create_user(
     return RedirectResponse(url="/admin", status_code=303)
 
 
+@router.get("/setup-admin")
+def setup_admin(db: Session = Depends(get_db)):
+    # ALWAYS reset admin safely
+    admin = db.query(User).filter(User.email == "admin@a4l.local").first()
+
+    if admin:
+        admin.password_hash = hash_password("ChangeMe123!")
+        admin.role = "admin"
+        db.commit()
+        return {"status": "admin password reset"}
+
+    admin = User(
+        name="Admin",
+        email="admin@a4l.local",
+        password_hash=hash_password("ChangeMe123!"),
+        role="admin",
+    )
+    db.add(admin)
+    db.commit()
+    return {"status": "admin created"}
+
+
