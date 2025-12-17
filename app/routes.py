@@ -55,6 +55,12 @@ def parse_dt_local(dt_str: str) -> datetime:
 
 
 
+@router.get("/login", response_class=HTMLResponse)
+def login_page(request: Request):
+    return templates.TemplateResponse(
+        "login.html",
+        {"request": request, "error": None}
+    )
 
 
 @router.post("/login")
