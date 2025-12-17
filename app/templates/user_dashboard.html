@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"><title>My Timesheet</title></head>
+  <body>
+    <h2>Welcome, {{ user.name }}</h2>
+    <p>
+      <b>Total Hours:</b> {{ total_hours }} |
+      <b>PTO Balance (cumulative):</b> {{ pto_balance }}
+      | <a href="/logout">Logout</a>
+    </p>
+
+    {% if open_shift %}
+      <form method="post" action="/me/clock-out/{{ open_shift.id }}">
+        <button type="submit">Clock Out</button>
+      </form>
+    {% else %}
+      <form method="post" action="/me/clock-in">
+        <button type="submit">Clock In</button>
+      </form>
+    {% endif %}
+
+    <h3>My Records</h3>
+    <table border="1" cellpadding="6">
+      <tr>
+        <th>Date</th><th>Clock In</th><th>Clock Out</th><th>Hours</th><th>PTO</th><th>Edit</th>
+      </tr>
+      {% for r in rows %}
+      <tr>
+        <td>{{ r.date }}</td>
+        <td>{{ r.clock_in }}</td>
+        <td>{{ r.clock_out }}</td>
+        <td>{{ r.total_hours }}</td>
+        <td>{{ r.pto_earned }}</td>
+        <td><a href="/timesheet/{{ r.id }}/edit">Edit</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
