@@ -3,5 +3,7 @@ uvicorn
 sqlalchemy
 jinja2
 python-multipart
-passlib[bcrypt]
 itsdangerous
+
+passlib==1.7.4
+bcrypt==4.0.1
