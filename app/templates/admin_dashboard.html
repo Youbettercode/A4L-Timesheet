@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"><title>Admin Dashboard</title></head>
+  <body>
+    <h2>Admin Dashboard</h2>
+    <p><a href="/logout">Logout</a></p>
+
+    <h3>PTO / Hours (Cumulative)</h3>
+    <table border="1" cellpadding="6">
+      <tr><th>User</th><th>Email</th><th>Total Hours</th><th>PTO Balance</th></tr>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ balances[u.id].hours }}</td>
+        <td>{{ balances[u.id].pto }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <h3>Create User</h3>
+    <form method="post" action="/admin/create-user">
+      <input name="name" placeholder="Name" required>
+      <input name="email" placeholder="Email" type="email" required>
+      <input name="password" placeholder="Temp Password" required>
+      <button type="submit">Create</button>
+    </form>
+
+    <h3>Recent Timesheets</h3>
+    <table border="1" cellpadding="6">
+      <tr><th>ID</th><th>User ID</th><th>Date</th><th>Clock In</th><th>Clock Out</th><th>Hours</th><th>PTO</th><th>Edit</th></tr>
+      {% for t in timesheets %}
+      <tr>
+        <td>{{ t.id }}</td>
+        <td>{{ t.user_id }}</td>
+        <td>{{ t.date }}</td>
+        <td>{{ t.clock_in }}</td>
+        <td>{{ t.clock_out }}</td>
+        <td>{{ t.total_hours }}</td>
+        <td>{{ t.pto_earned }}</td>
+        <td><a href="/timesheet/{{ t.id }}/edit">Edit</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
+
