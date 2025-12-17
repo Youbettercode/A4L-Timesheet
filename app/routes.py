@@ -54,26 +54,7 @@ def parse_dt_local(dt_str: str) -> datetime:
     return datetime.strptime(dt_str, "%Y-%m-%dT%H:%M")
 
 
-@router.get("/setup-admin")
-def setup_admin(db: Session = Depends(get_db)):
-    existing = db.query(User).filter(User.email == "admin@a4l.local").first()
-    if existing:
-        return {"status": "admin already exists"}
 
-    admin = User(
-        name="Admin",
-        email="admin@a4l.local",
-        password_hash=hash_password("ChangeMe123!"),
-        role="admin",
-    )
-    db.add(admin)
-    db.commit()
-    return {"status": "admin created", "login": "admin@a4l.local / ChangeMe123!"}
-
-
-@router.get("/login", response_class=HTMLResponse)
-def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request, "error": None})
 
 
 @router.post("/login")
